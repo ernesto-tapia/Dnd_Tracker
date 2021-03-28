@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import CreationModal from "./Tracker/CreationModal";
+import CharacterCard from "./Tracker/CharacterCard";
+import { useState } from "react";
+
+const initialValues = Object.freeze({
+  cards: [],
+  create: false,
+});
 
 function App() {
+  const [characters, setCharacters] = useState(initialValues);
+
+  if (characters.create)
+    return (
+      <CreationModal setCharacters={setCharacters} cards={characters.cards} />
+    );
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => setCharacters({ ...characters, create: true })}>
+        Add
+      </button>
+      {characters.cards.length > 0 &&
+        characters.cards.map((card) => <CharacterCard card={card} />)}
     </div>
   );
 }
