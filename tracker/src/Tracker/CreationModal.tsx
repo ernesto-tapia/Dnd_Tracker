@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const InitValues = Object.freeze({
-  numOfEnemies: 14,
+  numOfEnemies: 1,
   name: "Bandit",
   amount: 1,
   dMax: 1,
@@ -36,10 +36,13 @@ export const CreationModal = (props: any) => {
     const { numOfEnemies, name, amount, dMax, dMod } = character;
     const newChars = [];
     for (let x = 0; x < numOfEnemies; x++) {
+      let hp = 0;
       for (let y = 0; y < amount; y++) {
-        const hp = Math.floor(Math.random() * (dMax - 1) + 1) + dMod * 1;
-        newChars.push({ name, hp, currentHp: hp });
+        const base = Math.floor(Math.random() * (dMax - 1) + 1);
+        hp = hp + base;
       }
+      hp = hp + dMod * 1;
+      newChars.push({ name, hp, currentHp: hp });
     }
     setCharacters({
       cards: [...cards, ...newChars],
@@ -49,7 +52,7 @@ export const CreationModal = (props: any) => {
 
   return (
     <div>
-      <form>
+      <p>
         <label>Number of enemies: </label>
         <input
           type="text"
@@ -57,6 +60,8 @@ export const CreationModal = (props: any) => {
           name="enemies"
           onChange={(e: any) => onNumberChange(e.target.value)}
         />
+      </p>
+      <p>
         <label>Type: </label>
         <input
           type="text"
@@ -64,27 +69,29 @@ export const CreationModal = (props: any) => {
           onChange={(e: any) => onTypeChange(e.target.value)}
           name="type"
         />
-        <label>Hp die: </label>
-        <input
-          type="number"
-          value={character.amount}
-          onChange={(e: any) => onAmountChange(e.target.value)}
-          name="dAmount"
-        />
-        <input
-          type="number"
-          value={character.dMax}
-          onChange={(e: any) => onDMaxChange(e.target.value)}
-          name="dMax"
-        />
-        <input
-          type="number"
-          value={character.dMod}
-          onChange={(e: any) => onDModChange(e.target.value)}
-          name="dMod"
-        />
-        <button onClick={() => onSubmit()}>Create</button>
-      </form>
+      </p>
+      <label>Hp die: </label>
+      <input
+        type="number"
+        value={character.amount}
+        onChange={(e: any) => onAmountChange(e.target.value)}
+        name="dAmount"
+      />
+      <span>d</span>
+      <input
+        type="number"
+        value={character.dMax}
+        onChange={(e: any) => onDMaxChange(e.target.value)}
+        name="dMax"
+      />
+      <span>modifier</span>
+      <input
+        type="number"
+        value={character.dMod}
+        onChange={(e: any) => onDModChange(e.target.value)}
+        name="dMod"
+      />
+      <button onClick={() => onSubmit()}>Create</button>
     </div>
   );
 };
