@@ -1,32 +1,17 @@
 import "./App.css";
-import CreationModal from "./Tracker/CreationModal";
-import CharacterCard from "./Tracker/CharacterCard";
-import { useState } from "react";
-
-const initialValues = Object.freeze({
-  cards: [],
-  create: false,
-});
+import createStore from "./Store";
+import { Provider } from "react-redux";
+import Dashboard from "./Features/Dashboard";
+import Header from "./Header";
 
 function App() {
-  const [characters, setCharacters] = useState(initialValues);
-
-  if (characters.create)
-    return (
-      <CreationModal setCharacters={setCharacters} cards={characters.cards} />
-    );
+  const store = createStore();
   return (
     <div className="App">
-      <p>
-        <button onClick={() => setCharacters({ ...characters, create: true })}>
-          Add
-        </button>
-        <button onClick={() => setCharacters(initialValues)}>Clear</button>
-      </p>
-      {characters.cards.length > 0 &&
-        characters.cards.map((card, index) => (
-          <CharacterCard card={card} index={index} />
-        ))}
+      <Provider store={store}>
+        <Header />
+        <Dashboard />
+      </Provider>
     </div>
   );
 }
