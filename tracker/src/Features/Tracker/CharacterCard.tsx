@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { Card, CardHeader, CardContent, Typography } from "@material-ui/core";
 
 const CharacterCard = (props: any) => {
   const { card, index } = props;
@@ -9,18 +10,21 @@ const CharacterCard = (props: any) => {
     const newLife = life < hp ? life - e.value : hp - e.value;
     setLife(newLife);
   };
-  if (life <= 0) return <p>ded</p>;
+  if (life <= 0) return <Typography>dead</Typography>;
 
   return (
-    <div>
-      <p>
-        [{index}] {name} {life || hp}/{hp}
+    <Card>
+      <CardHeader title={`  [${index}] ${name}`} />
+      <CardContent>
+        <Typography variant="h4">
+          {life || hp}/{hp}
+        </Typography>
         <input
           type="text"
           onKeyDown={(e) => e.key === "Enter" && minus(e.target)}
         />
-      </p>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

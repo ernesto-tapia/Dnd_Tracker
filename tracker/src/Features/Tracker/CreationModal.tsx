@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { CreationData } from "../../Types/Character";
+import { actions } from "../../Features/Character/reducer";
 
 const InitValues = Object.freeze({
   numOfEnemies: 1,
@@ -8,46 +11,38 @@ const InitValues = Object.freeze({
   dMod: 0,
 });
 
-export const CreationModal = (props: any) => {
-  const { cards, setCharacters } = props;
-  const [character, setCharacter] = useState(InitValues);
+export const CreationModal = () => {
+  const dispatch = useDispatch();
+  const [characters, setCharacters] = useState(InitValues);
 
   const onNumberChange = (number: number) => {
-    setCharacter({ ...character, numOfEnemies: number });
+    setCharacters({ ...characters, numOfEnemies: number });
   };
 
   const onTypeChange = (name: string) => {
-    setCharacter({ ...character, name });
+    setCharacters({ ...characters, name });
   };
 
   const onAmountChange = (number: number) => {
-    setCharacter({ ...character, amount: number });
+    setCharacters({ ...characters, amount: number });
   };
 
   const onDMaxChange = (number: number) => {
-    setCharacter({ ...character, dMax: number });
+    setCharacters({ ...characters, dMax: number });
   };
 
   const onDModChange = (number: number) => {
-    setCharacter({ ...character, dMod: number });
+    setCharacters({ ...characters, dMod: number });
   };
 
+  const setSelections = useCallback(
+    (characters: CreationData) =>
+      dispatch({ type: actions.createCharactersReceived, payload: characters }),
+    [dispatch]
+  );
+
   const onSubmit = () => {
-    const { numOfEnemies, name, amount, dMax, dMod } = character;
-    const newChars = [];
-    for (let x = 0; x < numOfEnemies; x++) {
-      let hp = 0;
-      for (let y = 0; y < amount; y++) {
-        const base = Math.floor(Math.random() * (dMax - 1) + 1);
-        hp = hp + base;
-      }
-      hp = hp + dMod * 1;
-      newChars.push({ name, hp, currentHp: hp });
-    }
-    setCharacters({
-      cards: [...cards, ...newChars],
-      create: false,
-    });
+    setSelections(characters);
   };
 
   return (
@@ -56,7 +51,7 @@ export const CreationModal = (props: any) => {
         <label>Number of enemies: </label>
         <input
           type="text"
-          value={character.numOfEnemies}
+          value={characters.numOfEnemies}
           name="enemies"
           onChange={(e: any) => onNumberChange(e.target.value)}
         />
@@ -65,7 +60,7 @@ export const CreationModal = (props: any) => {
         <label>Type: </label>
         <input
           type="text"
-          value={character.name}
+          value={characters.name}
           onChange={(e: any) => onTypeChange(e.target.value)}
           name="type"
         />
@@ -73,21 +68,21 @@ export const CreationModal = (props: any) => {
       <label>Hp die: </label>
       <input
         type="number"
-        value={character.amount}
+        value={characters.amount}
         onChange={(e: any) => onAmountChange(e.target.value)}
         name="dAmount"
       />
       <span>d</span>
       <input
         type="number"
-        value={character.dMax}
+        value={characters.dMax}
         onChange={(e: any) => onDMaxChange(e.target.value)}
         name="dMax"
       />
       <span>modifier</span>
       <input
         type="number"
-        value={character.dMod}
+        value={characters.dMod}
         onChange={(e: any) => onDModChange(e.target.value)}
         name="dMod"
       />
