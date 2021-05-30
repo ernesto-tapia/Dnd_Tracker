@@ -11,7 +11,6 @@ const initialValues = Object.freeze({
 export default () => {
   const { character } = useSelector(getCards);
   const { cards, create } = character || initialValues;
-  console.log("cartas", cards, create, character);
   if (create) return <CreationModal />;
   return (
     <>

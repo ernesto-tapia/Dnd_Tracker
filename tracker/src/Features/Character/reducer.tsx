@@ -9,13 +9,15 @@ const initialState = Object.freeze({
 const addCharacters = (character: CreationData) => {
   const { numOfEnemies, name, amount, dMax, dMod } = character;
   const newChars = [] as CharacterData[];
-  const enemiesArray = [...Array(numOfEnemies)];
-  const dieArray = [...Array(amount)];
-  enemiesArray.map((mob: any) => {
+  const enemiesArray = [...Array(numOfEnemies * 1)];
+  const dieArray = [...Array(amount * 1)];
+  console.log(dieArray, "array");
+  enemiesArray.forEach((mob: any) => {
     let hp = 0;
-    dieArray.map((die) => {
+    dieArray.forEach((die) => {
       const base = Math.floor(Math.random() * (dMax - 1) + 1);
       hp = hp + base;
+      console.log(hp);
     });
     hp = hp + dMod * 1;
     newChars.push({ name, hp, currentHp: hp });
