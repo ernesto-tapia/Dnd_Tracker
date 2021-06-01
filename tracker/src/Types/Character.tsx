@@ -4,12 +4,14 @@ export type CreationData = {
   numOfEnemies: number;
   dMax: number;
   dMod: number;
+  xp: number;
 };
 
 export type CharacterData = {
   name: string;
   hp: number;
-  currentHp: number;
+  description: string;
+  xp: number;
 };
 
 export type die = {

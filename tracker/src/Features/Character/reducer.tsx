@@ -7,20 +7,18 @@ const initialState = Object.freeze({
 });
 
 const addCharacters = (character: CreationData) => {
-  const { numOfEnemies, name, amount, dMax, dMod } = character;
+  const { numOfEnemies, name, amount, dMax, dMod, xp } = character;
   const newChars = [] as CharacterData[];
   const enemiesArray = [...Array(numOfEnemies * 1)];
   const dieArray = [...Array(amount * 1)];
-  console.log(dieArray, "array");
   enemiesArray.forEach((mob: any) => {
     let hp = 0;
     dieArray.forEach((die) => {
       const base = Math.floor(Math.random() * (dMax - 1) + 1);
       hp = hp + base;
-      console.log(hp);
     });
     hp = hp + dMod * 1;
-    newChars.push({ name, hp, currentHp: hp });
+    newChars.push({ name, hp, xp, description: "" });
   });
   return newChars;
 };
@@ -37,7 +35,6 @@ const slice = createSlice({
       return { cards: [], create: false };
     },
     createReceived: (state, action: PayloadAction<boolean>) => {
-      console.log(action);
       return { ...state, create: action.payload };
     },
   },

@@ -33,7 +33,6 @@ export default function Bar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [drawer, setDrawer] = useState(false);
-  console.log(drawer);
   const toggleDrawer = (isOpen: boolean) => (event: any) => {
     if (
       event.type === "keydown" &&

@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { TextField } from "@material-ui/core";
 import { CreationData } from "../../Types/Character";
 import { actions } from "../../Features/Character/reducer";
 
@@ -7,8 +8,9 @@ const InitValues = Object.freeze({
   numOfEnemies: 1,
   name: "Bandit",
   amount: 1,
-  dMax: 1,
+  dMax: 8,
   dMod: 0,
+  xp: 25,
 });
 
 export const CreationModal = () => {
@@ -35,6 +37,10 @@ export const CreationModal = () => {
     setCharacters({ ...characters, dMod: number });
   };
 
+  const onXpChange = (number: number) => {
+    setCharacters({ ...characters, xp: number });
+  };
+
   const setSelections = useCallback(
     (characters: CreationData) =>
       dispatch({ type: actions.createCharactersReceived, payload: characters }),
@@ -48,44 +54,43 @@ export const CreationModal = () => {
   return (
     <div>
       <p>
-        <label>Number of enemies: </label>
-        <input
-          type="text"
-          value={characters.numOfEnemies}
-          name="enemies"
+        <TextField
+          label="Number of Enemies:"
+          defaultValue={1}
           onChange={(e: any) => onNumberChange(e.target.value)}
+        />
+        <TextField
+          label="Type:"
+          defaultValue="Bandit"
+          onChange={(e: any) => onTypeChange(e.target.value)}
         />
       </p>
       <p>
-        <label>Type: </label>
-        <input
-          type="text"
-          value={characters.name}
-          onChange={(e: any) => onTypeChange(e.target.value)}
-          name="type"
+        <TextField
+          label="Amount of die:"
+          defaultValue="1"
+          onChange={(e: any) => onAmountChange(e.target.value)}
+        />
+        <TextField
+          label="Die size:"
+          defaultValue={8}
+          onChange={(e: any) => onDMaxChange(e.target.value)}
         />
       </p>
-      <label>Hp die: </label>
-      <input
-        type="number"
-        value={characters.amount}
-        onChange={(e: any) => onAmountChange(e.target.value)}
-        name="dAmount"
-      />
-      <span>d</span>
-      <input
-        type="number"
-        value={characters.dMax}
-        onChange={(e: any) => onDMaxChange(e.target.value)}
-        name="dMax"
-      />
-      <span>modifier</span>
-      <input
-        type="number"
-        value={characters.dMod}
-        onChange={(e: any) => onDModChange(e.target.value)}
-        name="dMod"
-      />
+      <p>
+        <TextField
+          label="Modifier"
+          defaultValue={0}
+          onChange={(e: any) => onDModChange(e.target.value)}
+        />
+      </p>
+      <p>
+        <TextField
+          label="Xp"
+          defaultValue={25}
+          onChange={(e: any) => onXpChange(e.target.value)}
+        />
+      </p>
       <button onClick={() => onSubmit()}>Create</button>
     </div>
   );
