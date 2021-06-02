@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardHeader,
@@ -6,7 +6,6 @@ import {
   Typography,
   TextField,
   makeStyles,
-  Paper,
   Grid,
 } from "@material-ui/core";
 
@@ -15,10 +14,13 @@ const useStyles = makeStyles({
     height: "100%",
     width: "100%",
   },
+  notes: {
+    height: "100%",
+  },
 });
 
 const CharacterCard = (props: any) => {
-  const { card, index } = props;
+  const { card, index, handleXpChange } = props;
   const classes = useStyles();
   const { name, hp, xp, description } = card;
   const [life, setLife] = useState(hp);
@@ -27,6 +29,8 @@ const CharacterCard = (props: any) => {
   const minus = (e: any) => {
     const newLife = life < hp ? life - e.value : hp - e.value;
     setLife(newLife);
+    console.log(newLife);
+    if (newLife <= 0) handleXpChange(xp);
   };
 
   const handleDescriptionChange = (note: string) => {
@@ -42,7 +46,7 @@ const CharacterCard = (props: any) => {
       className={classes.container}
       spacing={1}
     >
-      <Grid item xs={6}>
+      <Grid item xs={6} style={{ height: "80%" }}>
         <Card className={classes.container}>
           <CardHeader title={`  [${index}] ${name}`} />
           <CardContent>
@@ -56,6 +60,7 @@ const CharacterCard = (props: any) => {
                   {life || hp}/{hp}
                 </Typography>
                 <input
+                  style={{ width: "75%" }}
                   type="text"
                   onKeyDown={(e) => e.key === "Enter" && minus(e.target)}
                 />
@@ -64,16 +69,19 @@ const CharacterCard = (props: any) => {
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={6}>
-        <Paper className={classes.container}>
-          <TextField
-            className={classes.container}
-            multiline
-            rows={7}
-            label="Add Notes to identify the mob"
-            onChange={(e: any) => handleDescriptionChange(e.target.value)}
-          />
-        </Paper>
+      <Grid item xs={6} style={{ height: "80%" }}>
+        <Card className={classes.container}>
+          <CardContent>
+            <TextField
+              className={classes.notes}
+              label="Notes"
+              multiline
+              rows={5}
+              value={notes}
+              onChange={(e: any) => handleDescriptionChange(e.target.value)}
+            />
+          </CardContent>
+        </Card>
       </Grid>
     </Grid>
   );

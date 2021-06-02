@@ -1,5 +1,6 @@
 import { reducer as CharacterReducer } from "../Features/Character/reducer";
 
-export default {
+const reducers = {
   character: CharacterReducer,
 };
+export default reducers;

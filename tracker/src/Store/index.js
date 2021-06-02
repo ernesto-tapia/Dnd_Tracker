@@ -4,13 +4,12 @@ import createSagaMiddleware from "redux-saga";
 import reducers from "./reducers";
 
 const reducer = combineReducers(reducers);
-export type IState = ReturnType<typeof reducer>;
 
-export default () => {
+export default function index() {
   const composeEnhancers = composeWithDevTools({});
   const sagaMiddleware = createSagaMiddleware();
   const middleware = applyMiddleware(sagaMiddleware);
   const store = createStore(reducer, composeEnhancers(middleware));
 
   return store;
-};
+}
